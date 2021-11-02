@@ -31,7 +31,7 @@ extension String {
     ///
     /// - returns: The NSRegularExpression.
     func toRegex() -> NSRegularExpression {
-        var pattern: NSRegularExpression = NSRegularExpression()
+        var pattern: NSRegularExpression?
 
         do {
             try pattern = NSRegularExpression(pattern: self, options: .anchorsMatchLines)
@@ -39,7 +39,7 @@ extension String {
             print(error)
         }
 
-        return pattern
+        return pattern!
     }
 
     /// Converts a NSRange to a Range<String.Index>.

@@ -100,7 +100,11 @@ extension Int: ExpressibleByBooleanLiteral {
 
 infix operator ** : AdditionPrecedence
 func ** (lhs: Double, rhs: Double) -> Double {
-    return Darwin.pow(lhs, rhs)
+    #if os(Linux)
+        return Glibc.pow(lhs, rhs)
+    #else
+        return Darwin.pow(lhs, rhs)
+    #endif
 }
 
 public func any<R: Sequence>(_ iterable: R) -> Bool where R.Element: ExpressibleByBooleanLiteral {
@@ -247,7 +251,11 @@ public func rawInput() -> String {
 }
 
 public func round(_ d: Float) -> Float {
-    return Darwin.round(d)
+    #if os(Linux)
+        return Glibc.round(d)
+    #else
+        return Darwin.round(d)
+    #endif
 }
 
 public func sum(_ iterable: [Double], _ start: Double = 0) -> Double {

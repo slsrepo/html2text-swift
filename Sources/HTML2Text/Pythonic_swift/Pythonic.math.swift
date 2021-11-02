@@ -56,7 +56,11 @@
 //   tanh: Added.
 //   trunc: Added.
 
-import Darwin
+#if os(Linux)
+    import Glibc
+#else
+    import Darwin
+#endif
 
 /* public protocol FloatArithmetic: ExpressibleByFloatLiteral {
     static func + (lhs: Self, rhs: Self) -> Self
@@ -73,102 +77,204 @@ extension Double: FloatArithmetic {
 
 public class math {
     public class var e: Double { return 2.718281828459045 }
-    public class var pi: Double { return Darwin.acos(-1.0) }
+    public class var pi: Double { 
+        #if os(Linux)
+            return Glibc.acos(-1.0)
+        #else
+            return Darwin.acos(-1.0)
+        #endif
+    }
 
     public class func acos(_ arg1: Double) -> Double {
-        return Darwin.acos(arg1)
+        #if os(Linux)
+            return Glibc.acos(arg1)
+        #else
+            return Darwin.acos(arg1)
+        #endif
     }
 
     public class func acosh(_ arg1: Double) -> Double {
-        return Darwin.acosh(arg1)
+        #if os(Linux)
+            return Glibc.acosh(arg1)
+        #else
+            return Darwin.acosh(arg1)
+        #endif
     }
 
     public class func asin(_ arg1: Double) -> Double {
-        return Darwin.asin(arg1)
+        #if os(Linux)
+            return Glibc.asin(arg1)
+        #else
+            return Darwin.asin(arg1)
+        #endif
     }
 
     public class func asinh(_ arg1: Double) -> Double {
-        return Darwin.asinh(arg1)
+        #if os(Linux)
+            return Glibc.asinh(arg1)
+        #else
+            return Darwin.asinh(arg1)
+        #endif
     }
 
     public class func atan(_ arg1: Double) -> Double {
-        return Darwin.atan(arg1)
+        #if os(Linux)
+            return Glibc.atan(arg1)
+        #else
+            return Darwin.atan(arg1)
+        #endif
     }
 
     public class func atan2(_ arg1: Double, _ arg2: Double) -> Double {
-        return Darwin.atan2(arg1, arg2)
+        #if os(Linux)
+            return Glibc.atan2(arg1, arg2)
+        #else
+            return Darwin.atan2(arg1, arg2)
+        #endif
     }
 
     public class func atanh(_ arg1: Double) -> Double {
-        return Darwin.atanh(arg1)
+        #if os(Linux)
+            return Glibc.atanh(arg1)
+        #else
+            return Darwin.atanh(arg1)
+        #endif
     }
 
     public class func ceil(_ arg1: Double) -> Double {
-        return Darwin.ceil(arg1)
+        #if os(Linux)
+            return Glibc.ceil(arg1)
+        #else
+            return Darwin.ceil(arg1)
+        #endif
     }
 
     public class func copysign(_ arg1: Double, _ arg2: Double) -> Double {
-        return Darwin.copysign(arg1, arg2)
+        #if os(Linux)
+            return Glibc.copysign(arg1, arg2)
+        #else
+            return Darwin.copysign(arg1, arg2)
+        #endif
     }
 
     public class func cos(_ arg1: Double) -> Double {
-        return Darwin.cos(arg1)
+        #if os(Linux)
+            return Glibc.cos(arg1)
+        #else
+            return Darwin.cos(arg1)
+        #endif
     }
 
     public class func cosh(_ arg1: Double) -> Double {
-        return Darwin.cosh(arg1)
+        #if os(Linux)
+            return Glibc.cosh(arg1)
+        #else
+            return Darwin.cosh(arg1)
+        #endif
     }
 
     public class func erf(_ arg1: Double) -> Double {
-        return Darwin.erf(arg1)
+        #if os(Linux)
+            return Glibc.erf(arg1)
+        #else
+            return Darwin.erf(arg1)
+        #endif
     }
 
     public class func erfc(_ arg1: Double) -> Double {
-        return Darwin.erfc(arg1)
+        #if os(Linux)
+            return Glibc.erfc(arg1)
+        #else
+            return Darwin.erfc(arg1)
+        #endif
     }
 
     public class func exp(arg1: Double) -> Double {
-        return Darwin.exp(arg1)
+        #if os(Linux)
+            return Glibc.exp(arg1)
+        #else
+            return Darwin.exp(arg1)
+        #endif
     }
 
     public class func expm1(arg1: Double) -> Double {
-        return Darwin.expm1(arg1)
+        #if os(Linux)
+            return Glibc.expm1(arg1)
+        #else
+            return Darwin.expm1(arg1)
+        #endif
     }
 
     public class func fabs(arg1: Double) -> Double {
-        return Darwin.fabs(arg1)
+        #if os(Linux)
+            return Glibc.fabs(arg1)
+        #else
+            return Darwin.fabs(arg1)
+        #endif
     }
 
     public class func floor(arg1: Double) -> Double {
-        return Darwin.floor(arg1)
+        #if os(Linux)
+            return Glibc.floor(arg1)
+        #else
+            return Darwin.floor(arg1)
+        #endif
     }
 
     public class func fmod(arg1: Double, _ arg2: Double) -> Double {
-        return Darwin.fmod(arg1, arg2)
+        #if os(Linux)
+            return Glibc.fmod(arg1, arg2)
+        #else
+            return Darwin.fmod(arg1, arg2)
+        #endif
     }
 
     public class func hypot(arg1: Double, _ arg2: Double) -> Double {
-        return Darwin.hypot(arg1, arg2)
+        #if os(Linux)
+            return Glibc.hypot(arg1, arg2)
+        #else
+            return Darwin.hypot(arg1, arg2)
+        #endif
     }
 
     public class func ldexp(arg1: Double, arg2: CInt) -> Double {
-        return Darwin.ldexp(arg1, arg2)
+        #if os(Linux)
+            return Glibc.ldexp(arg1, arg2)
+        #else
+            return Darwin.ldexp(arg1, arg2)
+        #endif
     }
 
     public class func lgamma(arg1: Double) -> Double {
-        return Darwin.lgamma(arg1)
+        #if os(Linux)
+            return Glibc.lgamma(arg1)
+        #else
+            return Darwin.lgamma(arg1)
+        #endif
     }
 
     public class func log(arg1: Double) -> Double {
-        return Darwin.log(arg1)
+        #if os(Linux)
+            return Glibc.log(arg1)
+        #else
+            return Darwin.log(arg1)
+        #endif
     }
 
     public class func log10(arg1: Double) -> Double {
-        return Darwin.log10(arg1)
+        #if os(Linux)
+            return Glibc.log10(arg1)
+        #else
+            return Darwin.log10(arg1)
+        #endif
     }
 
     public class func log1p(arg1: Double) -> Double {
-        return Darwin.log1p(arg1)
+        #if os(Linux)
+            return Glibc.log1p(arg1)
+        #else
+            return Darwin.log1p(arg1)
+        #endif
     }
 
     public class func pow(arg1: Double, _ arg2: Double) -> Double {
@@ -176,27 +282,51 @@ public class math {
     }
 
     public class func sin(arg1: Double) -> Double {
-        return Darwin.sin(arg1)
+        #if os(Linux)
+            return Glibc.sin(arg1)
+        #else
+            return Darwin.sin(arg1)
+        #endif
     }
 
     public class func sinh(arg1: Double) -> Double {
-        return Darwin.sinh(arg1)
+        #if os(Linux)
+            return Glibc.sinh(arg1)
+        #else
+            return Darwin.sinh(arg1)
+        #endif
     }
 
     public class func sqrt(arg1: Double) -> Double {
-        return Darwin.sqrt(arg1)
+        #if os(Linux)
+            return Glibc.sqrt(arg1)
+        #else
+            return Darwin.sqrt(arg1)
+        #endif
     }
 
     public class func tan(arg1: Double) -> Double {
-        return Darwin.tan(arg1)
+        #if os(Linux)
+        return Glibc.tan(arg1)
+        #else
+            return Darwin.tan(arg1)
+        #endif
     }
 
     public class func tanh(arg1: Double) -> Double {
-        return Darwin.tanh(arg1)
+        #if os(Linux)
+        return Glibc.tanh(arg1)
+        #else
+            return Darwin.tanh(arg1)
+        #endif
     }
 
     public class func trunc(arg1: Double) -> Double {
-        return Darwin.trunc(arg1)
+        #if os(Linux)
+        return Glibc.trunc(arg1)
+        #else
+            return Darwin.trunc(arg1)
+        #endif
     }
 
     public class func degrees(r: Double) -> Double {
