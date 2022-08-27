@@ -1083,7 +1083,8 @@ public func list_numbering_start(_ attrs: [String: String]) -> Int {
                 for _ in xrange(self.list.count) {
                     bq += "    "
                 }
-							data = re.sub(#"\n\s*"#, "\n"+bq, data)
+                
+							data = data.replace("\n", "\n"+bq)
             }
             
             if self.startpre {
