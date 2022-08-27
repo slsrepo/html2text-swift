@@ -20,8 +20,8 @@ extension String {
     ///
     /// - returns: The equivalent NSRange.
     func nsRange(from range: Range<String.Index>) -> NSRange {
-        let from = range.lowerBound.samePosition(in: utf16)
-        let to = range.upperBound.samePosition(in: utf16)
+//        let from = range.lowerBound.samePosition(in: utf16)
+//        let to = range.upperBound.samePosition(in: utf16)
         // return NSRange(location: self.distance(from: utf16.startIndex, to: from!),
                        // length: self.distance(from: from!, to: to!))
         return NSRange(range, in: self)
