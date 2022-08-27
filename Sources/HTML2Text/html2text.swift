@@ -59,14 +59,14 @@ public let UNICODE_SNOB = true
 public let ESCAPE_SNOB = false
 
 // Put the links after each paragraph instead of at the end.
-public let LINKS_EACH_PARAGRAPH = false
+public let LINKS_EACH_PARAGRAPH = true
 
 // Wrap long lines at position. 0 for no wrapping. (Requires Python 2.3.)
-public let BODY_WIDTH = 0
+public let BODY_WIDTH = 80
 
 // Don't show internal links (href="#local-anchor") -- corresponding link targets
 // won't be visible in the plain text file anyway.
-public let SKIP_INTERNAL_LINKS = false // true
+public let SKIP_INTERNAL_LINKS = true // true
 
 // Use inline, rather than reference, formatting for images and links
 public let INLINE_LINKS = false
@@ -388,7 +388,7 @@ public func list_numbering_start(_ attrs: [String: String]) -> Int {
         self.ignore_images = IGNORE_IMAGES
         self.ignore_emphasis = IGNORE_EMPHASIS
         self.google_doc = true
-        self.ul_item_mark = "*"
+        self.ul_item_mark = "-"
         self.emphasis_mark = "_"
         self.strong_mark = "**"
         
@@ -1134,7 +1134,11 @@ public func list_numbering_start(_ attrs: [String: String]) -> Int {
 									}
 
                     if self.outcount > Int(link["outcount"]!)! {
-                        self.outtextf("[" + String(link["count"]!) + "]: " + URL(string: link["href"]!.stringByAddingPercentEncodingForFormUrlencoded()!, relativeTo: URL(string: self.baseurl))!.absoluteString.removingPercentEncoding!)
+											var fulllink = link["href"]
+											if fulllink!.startswith("/") {
+												fulllink = "\(self.baseurl)\(fulllink!)"
+											}
+                        self.outtextf("[" + String(link["count"]!) + "]: " + URL(string: fulllink!.stringByAddingPercentEncodingForFormUrlencoded()!)!.absoluteString.removingPercentEncoding!)
                         
                         if has_key(link, "title") {
                             self.outtextf(" \""+link["title"]!+"\"")
@@ -1670,15 +1674,17 @@ public func list_numbering_start(_ attrs: [String: String]) -> Int {
         
         // wrapwrite(fixheadlines(normalize_tables(h.handle(data.replace("u{201c}", "\"").replace("u{201d}", "\"").replace("u{2018}","'").replace("u{2019}","'")))))
         // return wrapwrite(fixheadlines(fixbrackets(h.handle(data.replace("u{201c}", "\"").replace("u{201d}", "\"").replace("u{2018}","'").replace("u{2019}","'")))))
-        return fixheadlines(fixbrackets(h.handle(data.replace("u{201c}", "\"").replace("u{201d}", "\"").replace("u{2018}","'").replace("u{2019}","'"))))
+			var input = data.replace("u{201c}", "\"").replace("u{201d}", "\"").replace("u{2018}","'").replace("u{2019}","'")
+			input = input.replace("’", "'").replace("”", "\"").replace("“", "\"").replace("‘", "'").replace("–", "--").replace("—", "--")
+			return fixheadlines(fixbrackets(h.handle(input)))
     }
     
-    public static func process(html: String) -> String {
-        let h = HTML2Text(baseurl: "")
-        var result = html
-        let html2textresult = h.main(data: result)
+	public static func process(html: String, baseurl: String?) -> String {
+        let h = HTML2Text(baseurl: baseurl!)
+
+		    let html2textresult = h.main(baseurl: baseurl!, data: html)
         
-        result = html2textresult.replacingOccurrences(of: #"([\*\-\+] .*?)\n+(?=[\*\-\+] )"#, with: "$1\n", options: .regularExpression)
+        var result = html2textresult.replacingOccurrences(of: #"([\*\-\+] .*?)\n+(?=[\*\-\+] )"#, with: "$1\n", options: .regularExpression)
         result = result.replacingOccurrences(of: #"(?m)\n{2,}"#, with: "\n\n")
         result = result.replacingOccurrences(of: "__BR__", with: "  ")
         
