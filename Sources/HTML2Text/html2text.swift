@@ -437,10 +437,10 @@ public func list_numbering_start(_ attrs: [String: String]) -> Int {
     /// Feed some text to the parser. It is processed insofar as it consists of complete elements; incomplete data is buffered until more data is fed or close() is called.
     public func feed(_ data: String) {
         self.data += data.replace("</' + 'script>", "</ignore>")
-        if baseurl != "" {
-             document = try! SwiftSoup.parse(data, baseurl)
+			  if self.baseurl != "" {
+				  document = try! SwiftSoup.parse(data, self.baseurl)
         } else {
-            document = try! SwiftSoup.parse(data)
+					document = try! SwiftSoup.parse(data)
         }
         
         try! document?.traverse(self)
