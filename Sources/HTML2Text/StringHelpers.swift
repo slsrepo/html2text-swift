@@ -122,11 +122,18 @@ extension String {
 
     
     func substring(startingAt: Int) -> String {
-        return String(self[self.index(self.startIndex, offsetBy: startingAt)...])
+			if self.lengthOfBytes(using: .utf8) > startingAt - 1 {
+				return String(self[self.index(self.startIndex, offsetBy: startingAt)...])
+			}
+			return String(self);
     }
     
     func substring(endingAt: Int) -> String {
-        return String(self[..<self.index(self.startIndex, offsetBy: endingAt)])
+			if self.lengthOfBytes(using: .utf8) > endingAt {
+				return String(self[..<self.index(self.startIndex, offsetBy: endingAt)])
+			} else {
+				return String(self)
+			}
     }
     
     func substring(at range: NSRange) -> String? {

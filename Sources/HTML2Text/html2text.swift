@@ -1129,6 +1129,10 @@ public func list_numbering_start(_ attrs: [String: String]) -> Int {
                 var newa: [[String: String]] = []
                 
                 for link: [String: String] in self.a {
+									if link["href"] == "" {
+										continue
+									}
+
                     if self.outcount > Int(link["outcount"]!)! {
                         self.outtextf("[" + String(link["count"]!) + "]: " + URL(string: link["href"]!.stringByAddingPercentEncodingForFormUrlencoded()!, relativeTo: URL(string: self.baseurl))!.absoluteString.removingPercentEncoding!)
                         
