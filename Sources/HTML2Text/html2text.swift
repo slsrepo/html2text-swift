@@ -438,7 +438,7 @@ public func list_numbering_start(_ attrs: [String: String]) -> Int {
     public func feed(_ data: String) {
         self.data += data.replace("</' + 'script>", "</ignore>")
 			  if self.baseurl != "" {
-				  document = try! SwiftSoup.parse(data, self.baseurl)
+					document = try! SwiftSoup.parse(data, self.baseurl)
         } else {
 					document = try! SwiftSoup.parse(data)
         }
@@ -1083,8 +1083,7 @@ public func list_numbering_start(_ attrs: [String: String]) -> Int {
                 for _ in xrange(self.list.count) {
                     bq += "    "
                 }
-                
-                data = data.replace("\n", "\n"+bq)
+							data = re.sub(#"\n\s*"#, "\n"+bq, data)
             }
             
             if self.startpre {
