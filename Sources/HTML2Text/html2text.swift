@@ -122,7 +122,7 @@ public class HTML2Text: NodeVisitor {
     /// Return true if the line does only consist of whitespace characters.
     public func onlywhite(_ line: String) -> Bool {
         for c in line {
-            if c != Character(" ") && c != Character("  ") {
+            if c != Character(" "), c != Character("  ") {
                 return c == Character(" ")
             }
         }
@@ -132,7 +132,7 @@ public class HTML2Text: NodeVisitor {
     }
 
     public func hn(_ tag: String) -> Int {
-        if tag.first == "h" && tag.count == 2 {
+        if tag.first == "h", tag.count == 2 {
             if let n = Int(tag.substring(startingAt: 1)), (1 ... 10).contains(n) {
                 return n
             }
@@ -448,14 +448,14 @@ public class HTML2Text: NodeVisitor {
         try! document?.traverse(self)
     }
 
-    public func head(_ node: Node, _ depth: Int) throws {
+    public func head(_ node: Node, _: Int) throws {
         handle_tag(node.nodeName(),
                    dict(uniqueKeysWithValues: node.getAttributes()!.asList().flatMap { (attr: Attribute) -> [String: String] in
                        [attr.getKey(): attr.getValue()]
                    }), true)
     }
 
-    public func tail(_ node: Node, _ depth: Int) throws {
+    public func tail(_ node: Node, _: Int) throws {
         handle_tag(node.nodeName(), nil, false)
     }
 
@@ -528,9 +528,9 @@ public class HTML2Text: NodeVisitor {
             i += 1
             var match = false
 
-            if a.has_key("href") && a["href"]! == attrs["href"] {
+            if a.has_key("href"), a["href"]! == attrs["href"] {
                 if has_key(a, "title") || has_key(attrs, "title") {
-                    if has_key(a, "title") && has_key(attrs, "title") && a["title"] == attrs["title"] {
+                    if has_key(a, "title"), has_key(attrs, "title"), a["title"] == attrs["title"] {
                         match = true
                     }
                 } else {
@@ -546,7 +546,7 @@ public class HTML2Text: NodeVisitor {
     }
 
     public func drop_last(_ nLetters: Int) {
-        if !quiet && nLetters < outtext.count {
+        if !quiet, nLetters < outtext.count {
             outtext = outtext.substring(endingAt: outtext.count - nLetters) // [...(-nLetters)]
         }
     }
@@ -628,7 +628,7 @@ public class HTML2Text: NodeVisitor {
             }
 
             // space is only allowed after *all* emphasis marks
-            if (bold || italic) && !emphasis {
+            if bold || italic, !emphasis {
                 o(" ")
             }
 
@@ -675,7 +675,7 @@ public class HTML2Text: NodeVisitor {
 
         if tag == "#text" {
             if start, let text = attrs!["text"], text != "\n " {
-                if let lastItem = outtextlist.last, lastItem.count > 1 && lastItem.substring(endingAt: 2) == "[^" && Int(text) != nil {
+                if let lastItem = outtextlist.last, lastItem.count > 1, lastItem.substring(endingAt: 2) == "[^", Int(text) != nil {
                     // Clean Footnote number
                     return
                 }
@@ -694,9 +694,9 @@ public class HTML2Text: NodeVisitor {
                     headerid = attrs!["id"]!
                 }
             } else {
-                //							if self.headerid != "" {
-                //								self.outtextf("[" + self.headerid + "]")
-                //							}
+                //                          if self.headerid != "" {
+                //                              self.outtextf("[" + self.headerid + "]")
+                //                          }
 
                 inheader = false
                 headerid = ""
@@ -706,7 +706,7 @@ public class HTML2Text: NodeVisitor {
 
         if ["p", "div"].contains(tag) {
             if google_doc {
-                if start && google_has_height(tag_style) {
+                if start, google_has_height(tag_style) {
                     p()
                 } else {
                     soft_br()
@@ -716,7 +716,7 @@ public class HTML2Text: NodeVisitor {
             }
         }
 
-        if tag == "sup" && start {
+        if tag == "sup", start {
             if has_key(attrs!, "id") {
                 let id = attrs!["id"] ?? ""
                 // self.supid = id
@@ -726,11 +726,11 @@ public class HTML2Text: NodeVisitor {
             }
         }
 
-        if tag == "br" && start {
+        if tag == "br", start {
             o("__BR__\n")
         }
 
-        if tag == "hr" && start {
+        if tag == "hr", start {
             p()
             o("* * *")
             p()
@@ -768,11 +768,11 @@ public class HTML2Text: NodeVisitor {
             }
         }
 
-        if ["em", "i", "u"].contains(tag) && !ignore_emphasis {
+        if ["em", "i", "u"].contains(tag), !ignore_emphasis {
             o(emphasis_mark)
         }
 
-        if ["strong", "b"].contains(tag) && !ignore_emphasis {
+        if ["strong", "b"].contains(tag), !ignore_emphasis {
             o(strong_mark)
         }
 
@@ -791,7 +791,7 @@ public class HTML2Text: NodeVisitor {
             }
         }
 
-        if ["code", "tt"].contains(tag) && !pre {
+        if ["code", "tt"].contains(tag), !pre {
             o("`") // TODO: `` `this` ``
         }
 
@@ -813,9 +813,9 @@ public class HTML2Text: NodeVisitor {
             }
         }
 
-        if tag == "a" && !ignore_links {
+        if tag == "a", !ignore_links {
             if start {
-                if has_key(attrs!, "href") && !(skip_internal_links && attrs!["href"]!.startswith("#")) && attrs!["href"]!.substring(endingAt: 3) != "#fn" {
+                if has_key(attrs!, "href"), !(skip_internal_links && attrs!["href"]!.startswith("#")), attrs!["href"]!.substring(endingAt: 3) != "#fn" {
                     astack.append(attrs!)
                     maybe_automatic_link = attrs!["href"]
                 } else {
@@ -852,7 +852,7 @@ public class HTML2Text: NodeVisitor {
             }
         }
 
-        if tag == "img" && start && !ignore_images {
+        if tag == "img", start, !ignore_images {
             if var attrs = attrs, has_key(attrs, "src") {
                 attrs["href"] = attrs["src"]
                 let alt = attrs.get("alt") ?? ""
@@ -874,25 +874,25 @@ public class HTML2Text: NodeVisitor {
             }
         }
 
-        if tag == "dl" && start {
+        if tag == "dl", start {
             p()
         }
 
-        if tag == "dt" && !start {
+        if tag == "dt", !start {
             pbr()
         }
 
-        if tag == "dd" && start {
-            o(": ")
+        if tag == "dd", start {
+            o(":")
         }
 
-        if tag == "dd" && !start {
+        if tag == "dd", !start {
             p()
         }
 
         if ["ol", "ul"].contains(tag) {
             // Google Docs create sub lists as top level lists
-            if (list.count < 0) && !lastWasList {
+            if list.count < 0, !lastWasList {
                 p()
             }
 
@@ -986,10 +986,10 @@ public class HTML2Text: NodeVisitor {
 
         if tag == "tr" {
             if start {
-                if table == 2 && table_has_header == true {
+                if table == 2, table_has_header == true {
                     o("\n" + ("| ---- " * table_cols_max) + " |\n| ")
                     table_has_header = false
-                } else if table_has_header == false && table == 0 {
+                } else if table_has_header == false, table == 0 {
                     o("\n| ----- |\n| ")
                 } else {
                     o("\n| ")
@@ -1048,7 +1048,7 @@ public class HTML2Text: NodeVisitor {
             if google_doc {
                 // prevent white space immediately after "begin emphasis" marks ("**" && "_")
                 let lstripped_data = data.lstrip()
-                if drop_white_space && !(pre || code) {
+                if drop_white_space, !(pre || code) {
                     data = lstripped_data
                 }
 
@@ -1057,16 +1057,16 @@ public class HTML2Text: NodeVisitor {
                 }
             }
 
-            if puredata && !pre {
-                data = re.sub(#"\s+"#, " ", data)
+            if puredata, !pre {
+							  data = re.sub(#"\s+"#, " ", data).trimmingCharacters(in: .whitespaces)
 
-                if data != "" && data.startswith(" ") {
+                if data != "", data.startswith(" ") {
                     space = true
                     data = data.substring(startingAt: 1)
                 }
             }
 
-            if data == "" && force == "0" {
+            if data == "", force == "0" {
                 return
             }
 
@@ -1079,7 +1079,7 @@ public class HTML2Text: NodeVisitor {
 
             var bq = (">" * blockquote)
 
-            if !((force == "end") && data != "" && data.startswith(">")) && blockquote > 0 {
+            if !((force == "end") && data != "" && data.startswith(">")), blockquote > 0 {
                 bq += " "
             }
 
@@ -1130,7 +1130,7 @@ public class HTML2Text: NodeVisitor {
                 space = false
             }
 
-            if a.count > 0 && ((p_p == 2 && links_each_paragraph) || force == "end") {
+            if a.count > 0, (p_p == 2 && links_each_paragraph) || force == "end" {
                 outtextf("\n")
                 if force == "end" {
                     outtextf("\n")
@@ -1167,7 +1167,7 @@ public class HTML2Text: NodeVisitor {
                 a = newa
             }
 
-            if abbr_list.count > 0 && force == "end" {
+            if abbr_list.count > 0, force == "end" {
                 for (abbr, definition) in abbr_list.items() {
                     outtextf("  *[" + abbr + "]: " + definition + "\n")
                 }
@@ -1194,7 +1194,7 @@ public class HTML2Text: NodeVisitor {
 
         if maybe_automatic_link != nil {
             let href = maybe_automatic_link
-            if href == data && href!.matches(absolute_url_matcher) {
+            if href == data, href!.matches(absolute_url_matcher) {
                 o("<" + data + ">")
                 return
             } else {
@@ -1203,7 +1203,7 @@ public class HTML2Text: NodeVisitor {
             }
         }
 
-        if !code && !pre {
+        if !code, !pre {
             data = escape_md_section(data, snob: escape_snob)
         }
 
@@ -1218,7 +1218,7 @@ public class HTML2Text: NodeVisitor {
             c = Int(name)!
         }
 
-        if unifiable_n.keys.contains(c) && !unicode_snob {
+        if unifiable_n.keys.contains(c), !unicode_snob {
             return unifiable_n[c]!
         } else {
             return chr(c)
@@ -1226,7 +1226,7 @@ public class HTML2Text: NodeVisitor {
     }
 
     public func entityref(_ c: String) -> String {
-        if unifiable.keys.contains(c) && !unicode_snob {
+        if unifiable.keys.contains(c), !unicode_snob {
             return unifiable[c]!
             /* } else {
              do {
@@ -1479,8 +1479,8 @@ public class HTML2Text: NodeVisitor {
         var rows = lines.count
 
         // Figure out the cell formatting.
-        var formatline: String = ""
-        var formatrow: Int = 0
+        var formatline = ""
+        var formatrow = 0
 
         // First, find the separator line.
         for i in 0 ... rows {
