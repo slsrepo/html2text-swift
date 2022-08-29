@@ -914,6 +914,10 @@ public class HTML2Text: NodeVisitor {
                 }
 
                 lastWasList = true
+
+                if list.count == 0 {
+                    p()
+                }
             }
         } else {
             lastWasList = false
@@ -1058,7 +1062,7 @@ public class HTML2Text: NodeVisitor {
             }
 
             if puredata, !pre {
-							  data = re.sub(#"\s+"#, " ", data).trimmingCharacters(in: .whitespaces)
+                data = re.sub(#"\s+"#, " ", data).trimmingCharacters(in: .whitespaces)
 
                 if data != "", data.startswith(" ") {
                     space = true
