@@ -844,7 +844,7 @@ public class HTML2Text: NodeVisitor {
                                     self.a.append(a)
                                 }
 
-                                o("][" + String(a["count"]!) + "]")
+                                o("][" + String(a["count"]!) + "] ")
                             }
                         }
                     }
@@ -1199,10 +1199,10 @@ public class HTML2Text: NodeVisitor {
         if maybe_automatic_link != nil {
             let href = maybe_automatic_link
             if href == data, href!.matches(absolute_url_matcher) {
-                o("<" + data + ">")
+                o(" <" + data + "> ")
                 return
             } else {
-                o("[")
+                o(" [")
                 maybe_automatic_link = nil
             }
         }
