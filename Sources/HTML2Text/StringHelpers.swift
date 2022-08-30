@@ -20,8 +20,8 @@ extension String {
     ///
     /// - returns: The equivalent NSRange.
     func nsRange(from range: Range<String.Index>) -> NSRange {
-        let from = range.lowerBound.samePosition(in: utf16)
-        let to = range.upperBound.samePosition(in: utf16)
+//        let from = range.lowerBound.samePosition(in: utf16)
+//        let to = range.upperBound.samePosition(in: utf16)
         // return NSRange(location: self.distance(from: utf16.startIndex, to: from!),
                        // length: self.distance(from: from!, to: to!))
         return NSRange(range, in: self)
@@ -122,11 +122,18 @@ extension String {
 
     
     func substring(startingAt: Int) -> String {
-        return String(self[self.index(self.startIndex, offsetBy: startingAt)...])
+			if self.lengthOfBytes(using: .utf8) > startingAt - 1 {
+				return String(self[self.index(self.startIndex, offsetBy: startingAt)...])
+			}
+			return String(self);
     }
     
     func substring(endingAt: Int) -> String {
-        return String(self[..<self.index(self.startIndex, offsetBy: endingAt)])
+			if self.lengthOfBytes(using: .utf8) > endingAt {
+				return String(self[..<self.index(self.startIndex, offsetBy: endingAt)])
+			} else {
+				return String(self)
+			}
     }
     
     func substring(at range: NSRange) -> String? {

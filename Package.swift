@@ -7,9 +7,9 @@ let package = Package(
         .library(name: "HTML2Text", targets: ["HTML2Text"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/scinfu/SwiftSoup.git", from: "2.0.0"),
+        .package(url: "https://github.com/ttscoff/SwiftSoup.git", from: "2.0.0"),
     ],
     targets: [
-    	.target(name: "HTML2Text", dependencies: ["SwiftSoup"])
+        .target(name: "HTML2Text", dependencies: ["SwiftSoup"]),
     ]
 )
