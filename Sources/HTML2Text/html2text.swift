@@ -343,6 +343,7 @@ public class HTML2Text: NodeVisitor {
     public var a: [[String: String]] = []
     public var astack: [[String: String]] = []
     public var maybe_automatic_link: String?
+    public var maybe_linked_image = false
     public var absolute_url_matcher = #"^[a-zA-Z+]+://"#
     public var acount = 0
     public var list: [[String: String]] = []
@@ -405,6 +406,7 @@ public class HTML2Text: NodeVisitor {
         a = []
         astack = []
         maybe_automatic_link = nil
+        maybe_linked_image = false
         absolute_url_matcher = #"^[a-zA-Z+]+://"#
         acount = 0
         list = []
@@ -818,11 +820,13 @@ public class HTML2Text: NodeVisitor {
                 if has_key(attrs!, "href"), !(skip_internal_links && attrs!["href"]!.startswith("#")), attrs!["href"]!.substring(endingAt: 3) != "#fn" {
                     astack.append(attrs!)
                     maybe_automatic_link = attrs!["href"]
+                    maybe_linked_image = true
                 } else {
                     astack.append([:])
                 }
             } else {
                 maybe_automatic_link = nil
+                maybe_linked_image = false
                 if astack.count > 0 {
                     if var a = astack.pop() {
                         if maybe_automatic_link != nil {
@@ -853,6 +857,10 @@ public class HTML2Text: NodeVisitor {
         }
 
         if tag == "img", start, !ignore_images {
+            if maybe_linked_image {
+                o("[")
+                maybe_linked_image = false
+            }
             if var attrs = attrs, has_key(attrs, "src") {
                 attrs["href"] = attrs["src"]
                 let alt = attrs.get("alt") ?? ""
