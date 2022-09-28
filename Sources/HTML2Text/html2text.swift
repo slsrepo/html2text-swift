@@ -1157,6 +1157,11 @@ public class HTML2Text: NodeVisitor {
 
                     if outcount > Int(link["outcount"]!)! {
                         var fulllink = link["href"]
+
+                        if fulllink!.startswith("//") {
+                            fulllink = "https:\(fulllink!)"
+                        }
+
                         if fulllink!.startswith("/") {
                             fulllink = "\(baseurl)\(fulllink!)"
                         }
@@ -1452,7 +1457,7 @@ public class HTML2Text: NodeVisitor {
     }
 
     public func fixbrackets(_ input: String) -> String {
-        let pattern = #"(\s*)(`|[\*_]+)\[([^\]]+\\1\])"#
+        let pattern = #"(\s*)(`|[\*_]+)\[([^\]]+\1\])"#
 
         // $1 [$2]$3
         var fixbracket: String {
