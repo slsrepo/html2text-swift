@@ -325,8 +325,9 @@ public extension String {
     /// * str[2..<4]
     /// * str[2...4]
     subscript(_ range: Range<Int>) -> String {
-        let range = self.index(self.startIndex, offsetBy: range.startIndex)..<self.index(self.startIndex, offsetBy: range.endIndex)
-        return self.substring(with: range)
+//        let range = self.index(self.startIndex, offsetBy: range.startIndex)..<self.index(self.startIndex, offsetBy: range.endIndex)
+//        return self.substring(with: range)
+        return String(self[self.index(self.startIndex, offsetBy: range.startIndex)..<self.index(self.startIndex, offsetBy: range.endIndex)])
     }
 
     /// Split the string at the first occurrence of sep, and return a 3-tuple containing the part before the separator, the separator itself, and the part after the separator. If the separator is not found, return a 3-tuple containing the string itself, followed by two empty strings.
@@ -446,7 +447,7 @@ public extension String {
     func wrap(_ width: Int) -> [String] {
         var counter = 0
         var result: [String] = []
-        var lastIndex: String.Index = self.startIndex
+        let lastIndex: String.Index = self.startIndex
         
         while counter != self.count {
             let currentIndex: String.Index = self.index(lastIndex, offsetBy: width)
