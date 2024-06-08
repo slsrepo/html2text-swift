@@ -1,0 +1,111 @@
+//
+//  MarkupTests.swift
+//  
+//
+//  Created by Greg Pierce on 6/7/24.
+//
+
+import XCTest
+@testable import HTML2Text
+
+final class MarkupTests: XCTestCase {
+
+    override func setUpWithError() throws {
+        // Put setup code here. This method is called before the invocation of each test method in the class.
+    }
+
+    override func tearDownWithError() throws {
+        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    }
+
+    func testList() throws {
+        let html = """
+<html>
+<body>
+
+<ul>
+<li>List</li>
+<li>List</li>
+</ul>
+
+</body>
+</html>
+"""
+        let h = HTML2Text(baseurl: "")
+        let result = h.main(data: html)
+        XCTAssert(result == "- List\n- List\n")
+    }
+    
+    func testLink() throws {
+        let html = """
+<html>
+<body>
+
+<a href="https://github.com">GitHub</a>
+
+</body>
+</html>
+"""
+        let h = HTML2Text(baseurl: "")
+        h.inline_links = true
+        let result = h.main(data: html)
+        XCTAssert(result == "[GitHub](https://github.com)\n")
+    }
+    
+    func testListLink() throws {
+        let html = """
+<html>
+<body>
+
+<ul>
+<li><a href="link1">1</a></li>
+<li><a href="link2">2</a></li>
+</ul>
+
+</body>
+</html>
+"""
+        let h = HTML2Text(baseurl: "")
+        h.inline_links = true
+        let result = h.main(data: html)
+        XCTAssert(result == "- [1](link1)\n- [2](link2)\n")
+    }
+    
+    func testListBoldLink() throws {
+        let html = """
+<html>
+<body>
+
+<ul>
+<li><a href="link1"><b>1</b></a></li>
+<li><a href="link2"><b>2</b></a></li>
+</ul>
+
+</body>
+</html>
+"""
+        let h = HTML2Text(baseurl: "")
+        h.inline_links = true
+        let result = h.main(data: html)
+        XCTAssert(result == "- [**1**](link1)\n- [**2**](link2)\n")
+    }
+    
+    func testBoldLink() throws {
+        let html = """
+<a href="t1"><em>1</em></a>
+<a href="t2"><em>2</em></a>
+"""
+        let h = HTML2Text(baseurl: "")
+        h.inline_links = true
+        let result = h.main(data: html)
+        XCTAssert(result == "[_1_](t1) [_2_](t2)\n")
+    }
+
+    func testPerformanceExample() throws {
+        // This is an example of a performance test case.
+        self.measure {
+            // Put the code you want to measure the time of here.
+        }
+    }
+
+}

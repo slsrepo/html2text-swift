@@ -11,5 +11,8 @@ let package = Package(
     ],
     targets: [
         .target(name: "HTML2Text", dependencies: ["SwiftSoup"]),
+        .testTarget(
+            name: "HTML2TextTests",
+            dependencies: ["HTML2Text"])
     ]
 )
