@@ -1457,18 +1457,7 @@ public class HTML2Text: NodeVisitor {
     }
 
     public func fixbrackets(_ input: String) -> String {
-        let pattern = #"(\s*)(`|[\*_]+)\[([^\]]+\1\])"#
-
-        // $1 [$2]$3
-        var fixbracket: String {
-            let match = re.search(pattern, input)
-
-            let group1 = match.group(1) ?? ""
-            let group2 = match.group(2) ?? ""
-            let group3 = match.group(3) ?? ""
-            
-            return group1 + "[" + group2 + group3
-        }
+        let pattern = #"(\s*)(`|[\*_]+)\[([^\]]+\2\])"#
         
         var text = input
         let regex = try! NSRegularExpression(pattern: pattern, options: [])

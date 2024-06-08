@@ -90,7 +90,7 @@ final class MarkupTests: XCTestCase {
         XCTAssert(result == "- [**1**](link1)\n- [**2**](link2)\n")
     }
     
-    func testBoldLink() throws {
+    func testEmLink() throws {
         let html = """
 <a href="t1"><em>1</em></a>
 <a href="t2"><em>2</em></a>
@@ -101,11 +101,15 @@ final class MarkupTests: XCTestCase {
         XCTAssert(result == "[_1_](t1) [_2_](t2)\n")
     }
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    func testLinkEm() throws {
+        let html = """
+<em><a href="t1">1</a></em>
+<em><a href="t2">2</a></em>
+"""
+        let h = HTML2Text(baseurl: "")
+        h.inline_links = true
+        let result = h.main(data: html)
+        XCTAssert(result == "_[1](t1)_ _[2](t2)_\n")
     }
 
 }
