@@ -111,5 +111,16 @@ final class MarkupTests: XCTestCase {
         let result = h.main(data: html)
         XCTAssert(result == "_[1](t1)_ _[2](t2)_\n")
     }
+    
+    func testHeading() throws {
+        let html = """
+<h2><a href="a1">H1</a></h2>
+<h2><a href="a2">H2</a></h2>
+"""
+        let h = HTML2Text(baseurl: "")
+        h.inline_links = true
+        let result = h.main(data: html)
+        XCTAssert(result == "## [H1](a1)\n\n## [H2](a2)\n")
+    }
 
 }
