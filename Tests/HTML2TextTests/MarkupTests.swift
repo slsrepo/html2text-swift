@@ -122,5 +122,31 @@ final class MarkupTests: XCTestCase {
         let result = h.main(data: html)
         XCTAssert(result == "## [H1](a1)\n\n## [H2](a2)\n")
     }
+    
+    func testEmptyStartAttr() throws {
+        let html = """
+<ol start="">
+<li>First</li>
+<li>Second</li>
+</ol>
+"""
+        let h = HTML2Text(baseurl: "")
+        h.inline_links = true
+        let result = h.main(data: html)
+        XCTAssert(result == "1. First\n2. Second\n")
+    }
+    
+    func testValidStartAttr() throws {
+        let html = """
+<ol start="5">
+<li>First</li>
+<li>Second</li>
+</ol>
+"""
+        let h = HTML2Text(baseurl: "")
+        h.inline_links = true
+        let result = h.main(data: html)
+        XCTAssert(result == "5. First\n6. Second\n")
+    }
 
 }

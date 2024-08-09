@@ -278,8 +278,8 @@ public class HTML2Text: NodeVisitor {
 
     /// extract numbering from list element attributes
     public func list_numbering_start(_ attrs: [String: String]) -> Int {
-        if attrs.keys.contains("start") {
-            return Int(attrs["start"]!)! - 1
+        if attrs.keys.contains("start"), let s = attrs["start"], let ix = Int(s) {
+            return ix - 1
         } else {
             return 0
         }
