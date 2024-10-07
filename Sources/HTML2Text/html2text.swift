@@ -60,7 +60,7 @@ public class HTML2Text: NodeVisitor {
     public let ESCAPE_SNOB = false
 
     // Put the links after each paragraph instead of at the end.
-    public let LINKS_EACH_PARAGRAPH = true
+    public let LINKS_EACH_PARAGRAPH = false
 
     // Wrap long lines at position. 0 for no wrapping. (Requires Python 2.3.)
     public let BODY_WIDTH = 0
