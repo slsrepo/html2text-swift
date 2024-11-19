@@ -725,6 +725,8 @@ public class HTML2Text: NodeVisitor {
                 o("[^" + escape_md(id).replace("fnref:", "") + "]")
                 // self.suplist.append(["id": id, "outcount": String(self.outcount)])
                 // self.suplist.append(["id": id, "outcount": String(self.outtextlist.count - 1)])
+            } else {
+                o("^")
             }
         }
 
@@ -822,6 +824,7 @@ public class HTML2Text: NodeVisitor {
                     maybe_automatic_link = attrs!["href"]
                     maybe_linked_image = true
                 } else {
+                    o("[^]")
                     astack.append([:])
                 }
             } else {
@@ -1703,7 +1706,8 @@ public class HTML2Text: NodeVisitor {
         // return wrapwrite(fixheadlines(fixbrackets(h.handle(data.replace("u{201c}", "\"").replace("u{201d}", "\"").replace("u{2018}","'").replace("u{2019}","'")))))
         var input = data.replace("u{201c}", "\"").replace("u{201d}", "\"").replace("u{2018}", "'").replace("u{2019}", "'")
         input = input.replace("’", "'").replace("”", "\"").replace("“", "\"").replace("‘", "'").replace("–", "--").replace("—", "--")
-        return fixheadlines(fixbrackets(h.handle(input)))
+        return fixheadlines(fixbrackets(h.handle(input))).replacingOccurrences(of: #"\[\^\]\^(\d+)"#, with: "[^$1]", options: .regularExpression)
+        .replacingOccurrences(of: #"\[\^\]"#, with: "", options: .regularExpression)
     }
 
     public static func process(html: String, baseurl: String?) -> String {
