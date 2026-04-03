@@ -451,8 +451,9 @@ public class HTML2Text: NodeVisitor {
     }
 
     public func head(_ node: Node, _: Int) throws {
+        let attributes = node.getAttributes()?.asList() ?? []
         handle_tag(node.nodeName(),
-                   dict(uniqueKeysWithValues: node.getAttributes()!.asList().flatMap { (attr: Attribute) -> [String: String] in
+                   dict(uniqueKeysWithValues: attributes.flatMap { (attr: Attribute) -> [String: String] in
                        [attr.getKey(): attr.getValue()]
                    }), true)
     }
@@ -1168,7 +1169,9 @@ public class HTML2Text: NodeVisitor {
                         if fulllink!.startswith("/") {
                             fulllink = "\(baseurl)\(fulllink!)"
                         }
-                        outtextf("[" + String(link["count"]!) + "]: " + URL(string: fulllink!.stringByAddingPercentEncodingForFormUrlencoded()!)!.absoluteString.removingPercentEncoding!)
+                        let encodedLink = fulllink?.stringByAddingPercentEncodingForFormUrlencoded()
+                        let normalizedLink = encodedLink.flatMap { URL(string: $0)?.absoluteString.removingPercentEncoding } ?? fulllink ?? ""
+                        outtextf("[" + String(link["count"]!) + "]: " + normalizedLink)
 
                         if has_key(link, "title") {
                             outtextf(" \"" + link["title"]! + "\"")
@@ -1710,10 +1713,10 @@ public class HTML2Text: NodeVisitor {
         .replacingOccurrences(of: #"\[\^\]"#, with: "", options: .regularExpression)
     }
 
-    public static func process(html: String, baseurl: String?) -> String {
-        let h = HTML2Text(baseurl: baseurl!)
+    public static func process(html: String, baseurl: String = "") -> String {
+        let h = HTML2Text(baseurl: baseurl)
 
-        let html2textresult = h.main(baseurl: baseurl!, data: html)
+        let html2textresult = h.main(baseurl: baseurl, data: html)
 
         var result = html2textresult.replacingOccurrences(of: #"([\*\-\+] .*?)\n+(?=[\*\-\+] )"#, with: "$1\n", options: .regularExpression)
         result = result.replacingOccurrences(of: #"(?m)\n{2,}"#, with: "\n\n")
